@@ -1,4 +1,4 @@
-import { prisma } from '../database';
+import { prisma } from '../database/database';
 import { TItemData, TItemUpdate } from './../types/ItemsTypes';
 
 export async function findAll() {
