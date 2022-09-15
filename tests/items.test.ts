@@ -15,7 +15,14 @@ describe("Testa POST /items ", () => {
     expect(response.status).toBe(201);
   });
 
-  it.todo("Deve retornar 409, ao tentar cadastrar um item que exista");
+  it("Deve retornar 409, ao tentar cadastrar um item que exista", async () => {
+    const item = await __createItem();
+
+    await supertest(app).post("/items").send(item);
+    const response = await supertest(app).post("/items").send(item);
+
+    expect(response.status).toBe(409);
+  });
 });
 
 describe("Testa GET /items ", () => {
