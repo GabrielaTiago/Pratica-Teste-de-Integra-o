@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../src/app";
 import { prisma } from "../src/database/database";
-import { __createItem } from "./factory/itemFactory";
+import { __createId, __createItem } from "./factory/itemFactory";
 
 beforeEach(async () => {
   await prisma.$executeRaw`TRUNCATE TABLE items`;
@@ -35,16 +35,22 @@ describe("Testa GET /items ", () => {
 });
 
 describe("Testa GET /items/:id ", () => {
-  it("Deve retornar status 200 e um objeto igual a o item cadastrado", async () => {
-    const item = await __createItem();
+  // it("Deve retornar status 200 e um objeto igual a o item cadastrado", async () => {
+  //   const item = await __createItem();
 
-    const response = await supertest(app).get(`items/${item["id"]}`);
+  //   const response = await supertest(app).get(`items/${item["id"]}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(item);
+  //   expect(response.status).toBe(200);
+  //   expect(response.body).toEqual(item);
+  // });
+
+  it("Deve retornar status 404 caso não exista um item com esse id", async () => {
+    const id = __createId()
+
+    const response = await supertest(app).get(`items/${id}`);
+
+    expect(response.status).toBe(404);
   });
-
-  it.todo("Deve retornar status 404 caso não exista um item com esse id");
 });
 
 afterAll(async () => {

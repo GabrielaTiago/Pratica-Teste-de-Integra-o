@@ -12,3 +12,11 @@ export async function __createItem(){
 
     return item;
 }
+
+export function __createId(){
+    const id = {
+        id: faker.datatype.number()
+    }
+
+    return id;
+}
