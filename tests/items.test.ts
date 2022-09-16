@@ -37,11 +37,14 @@ describe("Testa GET /items ", () => {
 describe("Testa GET /items/:id ", () => {
   it("Deve retornar status 200 e um objeto igual a o item cadastrado", async () => {
     const item = await __createItem();
+    const createdItem = await supertest(app).post("/items").send(item);
 
-    const response = await supertest(app).get(`items/${item["id"]}`);
+    const { body: newItem } = createdItem;
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(item);
+    const result = await supertest(app).get(`/items/${newItem.id}`);
+
+    expect(result.status).toBe(200);
+    expect(newItem).toEqual(result.body);
   });
 
   it("Deve retornar status 404 caso não exista um item com esse id", async () => {
